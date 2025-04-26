@@ -68,7 +68,7 @@ const LoginScreen = () => {
         onPress={handleLogin}
         disabled={loading}>
         <CustomText variant="h5" style={styles.buttonText}>
-          {false ? 'Logging in...' : 'Login'}
+          {loading ? 'Logging in...' : 'Login'}
         </CustomText>
       </TouchableOpacity>
       {error && (

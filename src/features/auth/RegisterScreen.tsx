@@ -71,7 +71,7 @@ const RegisterScreen = () => {
         onPress={handleRegister}
         disabled={loading}>
         <CustomText variant="h5" style={styles.buttonText}>
-          {false ? 'Registering...' : 'Register'}
+          {loading ? 'Registering...' : 'Register'}
         </CustomText>
       </TouchableOpacity>
       {error && (
