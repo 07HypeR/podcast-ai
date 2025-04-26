@@ -1,21 +1,37 @@
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Colors} from '../../utils/Constants';
 import {screenHeight, screenWidth} from '../../utils/Scaling';
 import CustomText from '../../components/ui/CustomText';
 import {navigate} from '../../utils/NavigationUtils';
+import {useMutation} from '@apollo/client';
+import {REGISTER_MUTATION} from '../../graphQL/queries';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [register, {loading, error}] = useMutation(REGISTER_MUTATION);
+
+  const handleRegister = async () => {
+    try {
+      const {data} = await register({variables: {name, email, password}});
+      if (data?.registerUser?.user) {
+        Alert.alert('Registration Success, Login Now!');
+        navigate('LoginScreen');
+      }
+    } catch (err) {
+      Alert.alert('Registration failed', error?.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -42,6 +58,7 @@ const RegisterScreen = () => {
         onChangeText={setEmail}
       />
       <TextInput
+        value={password}
         style={styles.input}
         placeholder="Password"
         placeholderTextColor={Colors.inactive}
@@ -49,11 +66,17 @@ const RegisterScreen = () => {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleRegister}
+        disabled={loading}>
         <CustomText variant="h5" style={styles.buttonText}>
           {false ? 'Registering...' : 'Register'}
         </CustomText>
       </TouchableOpacity>
+      {error && (
+        <CustomText style={{color: 'red'}}>Error: {error.message}</CustomText>
+      )}
       <TouchableOpacity onPress={() => navigate('LoginScreen')}>
         <CustomText variant="h6" style={styles.signUpText}>
           Already have an account? Login

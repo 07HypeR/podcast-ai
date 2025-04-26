@@ -15,6 +15,7 @@ const SplashScreen = () => {
         resetAndNavigate('LoginScreen');
       }
     }, 1000);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (

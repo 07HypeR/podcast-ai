@@ -1,20 +1,42 @@
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Colors} from '../../utils/Constants';
 import {screenHeight, screenWidth} from '../../utils/Scaling';
 import CustomText from '../../components/ui/CustomText';
 import {navigate} from '../../utils/NavigationUtils';
+import {useMutation} from '@apollo/client';
+import {LOGIN_MUTATION} from '../../graphQL/queries';
+import {mmkvStorage} from '../../state/storage';
+import {usePlayerStore} from '../../state/usePlayerStore';
 
 const LoginScreen = () => {
+  const {setUser} = usePlayerStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [login, {loading, error}] = useMutation(LOGIN_MUTATION);
+
+  const handleLogin = async () => {
+    try {
+      const {data} = await login({variables: {email, password}});
+      if (data?.authenticateUserWithPassword?.sessionToken) {
+        mmkvStorage.setItem(
+          'token',
+          data.authenticateUserWithPassword.sessionToken,
+        );
+        setUser(data.authenticateUserWithPassword.item);
+        navigate('UserBottomTab');
+      }
+    } catch (err) {
+      Alert.alert('Login failed:' + error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -33,6 +55,7 @@ const LoginScreen = () => {
         onChangeText={setEmail}
       />
       <TextInput
+        value={password}
         style={styles.input}
         placeholder="Password"
         placeholderTextColor={Colors.inactive}
@@ -40,11 +63,17 @@ const LoginScreen = () => {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={loading}>
         <CustomText variant="h5" style={styles.buttonText}>
           {false ? 'Logging in...' : 'Login'}
         </CustomText>
       </TouchableOpacity>
+      {error && (
+        <CustomText style={{color: 'red'}}>Error: {error.message}</CustomText>
+      )}
       <TouchableOpacity onPress={() => navigate('RegisterScreen')}>
         <CustomText variant="h6" style={styles.signUpText}>
           Don't have an account? Sign Up
