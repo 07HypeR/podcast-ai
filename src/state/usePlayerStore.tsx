@@ -4,8 +4,8 @@ import {mmkvStorage} from './storage';
 
 interface Podcast {
   id: any;
-  audio_url: string;
-  video_url?: string;
+  audio_uri: string;
+  video_uri?: string;
   title: string;
   lyricist: string;
   type: string;
