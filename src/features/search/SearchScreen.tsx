@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   StyleSheet,
   TextInput,
   FlatList,
@@ -49,9 +48,9 @@ const SearchScreen = () => {
   };
 
   const renderPodcastItem = ({item}: any) => {
-    const isFavorite = item.favoriteBy?.length > 0;
+    const isFavourite = item.favoritedBy?.length > 0;
 
-    return <PodcastItem item={{...item, isFavorite}} />;
+    return <PodcastItem item={{...item, isFavourite}} />;
   };
 
   return (
