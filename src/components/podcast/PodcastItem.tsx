@@ -1,5 +1,5 @@
 import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Colors, Fonts} from '../../utils/Constants';
 import {usePlayerStore} from '../../state/usePlayerStore';
 import {useFavouritesStore} from '../../state/useFavouriteStore';
@@ -20,7 +20,10 @@ const PodcastItem: React.FC<PodcastItemProps> = ({item, onNavigate}) => {
     usePlayerStore();
   const {favoritePodcasts, toggleFavorite} = useFavouritesStore();
 
-  const isFavorite = favoritePodcasts.some(fav => fav.id === item.id);
+  const isFavorite = useMemo(() => {
+    return favoritePodcasts.some(fav => fav.id === item?.id);
+  }, [favoritePodcasts, item]);
+
   const isActive = currentPlayingPodcast?.id === item?.id;
 
   const [markFavorite] = useMutation(MARK_FAVOURITE);

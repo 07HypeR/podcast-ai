@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import {VideoRef} from 'react-native-video';
 import {useSharedState} from '../../features/tabs/SharedContext';
@@ -71,7 +71,6 @@ const withPlayer = <P extends object>(
       if (isPlaying) {
         videoRef.current?.pause();
       } else {
-        videoRef.current?.seek(progress * duration);
         videoRef.current?.resume();
       }
       setPlaying(!isPlaying);
