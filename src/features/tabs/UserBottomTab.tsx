@@ -3,12 +3,14 @@ import React from 'react';
 import HomeScreen from '../home/HomeScreen';
 import SearchScreen from '../search/SearchScreen';
 import FavouriteScreen from '../favourite/FavouriteScreen';
+import CustomTabBar from './CustomTabBar';
 
 const Tab = createBottomTabNavigator();
 
 const UserBottomTab: React.FC = () => {
   return (
     <Tab.Navigator
+      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,

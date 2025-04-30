@@ -6,6 +6,7 @@ import SplashScreen from '../features/auth/SplashScreen';
 import LoginScreen from '../features/auth/LoginScreen';
 import RegisterScreen from '../features/auth/RegisterScreen';
 import UserBottomTab from '../features/tabs/UserBottomTab';
+import AnimatedTabs from '../features/tabs/AnimatedTabs';
 
 const Stack = createNativeStackNavigator();
 const Navigation: FC = () => {
@@ -20,7 +21,7 @@ const Navigation: FC = () => {
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen name="UserBottomTab" component={UserBottomTab} />
+        <Stack.Screen name="UserBottomTab" component={AnimatedTabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );
